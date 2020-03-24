@@ -7,12 +7,18 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 // Explicit
+  final formKey = GlobalKey<FormState>();
+  String nameString, emailString, passwordString;
 
 // Method
   Widget registerButton() {
     return IconButton(
       icon: Icon(Icons.cloud_upload),
-      onPressed: () {},
+      onPressed: () {
+        formKey.currentState.save();
+        print('Name = $nameString, email = $emailString, password = $passwordString');
+
+      },
     );
   }
 
@@ -27,6 +33,9 @@ class _RegisterState extends State<Register> {
           labelText: 'Display Name :',
           helperText: 'Type Your Name :',
           hintText: 'อังกฤษ Only'),
+      onSaved: (value) {
+        nameString = value.trim();
+      },
     );
   }
 
@@ -41,6 +50,9 @@ class _RegisterState extends State<Register> {
           labelText: 'Password :',
           helperText: 'Type Your Password :',
           hintText: 'More 6 charactors'),
+      onSaved: (value) {
+        passwordString = value.trim();
+      },
     );
   }
 
@@ -55,6 +67,9 @@ class _RegisterState extends State<Register> {
           labelText: 'Email :',
           helperText: 'Type Your Email :',
           hintText: 'อังกฤษ Only'),
+      onSaved: (value) {
+        emailString = value.trim();
+      },
       keyboardType: TextInputType.emailAddress,
     );
   }
@@ -66,9 +81,16 @@ class _RegisterState extends State<Register> {
         title: Text('Register'),
         actions: <Widget>[registerButton()],
       ),
-      body: ListView(
-        padding: EdgeInsets.all(50.0),
-        children: <Widget>[nameText(),emailText(), passwordText()],
+      body: Form(
+        key: formKey,
+        child: ListView(
+          padding: EdgeInsets.all(50.0),
+          children: <Widget>[
+            nameText(),
+            emailText(),
+            passwordText(),
+          ],
+        ),
       ),
     );
   }
